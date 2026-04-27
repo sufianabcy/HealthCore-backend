@@ -1,0 +1,44 @@
+package com.healthcore.dto.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class PagedResponse<T> {
+    private List<T> content;
+    private int page;
+    private int size;
+    private long totalElements;
+    private int totalPages;
+
+    public static <T> PagedResponse<T> from(Page<T> page) {
+        return PagedResponse.<T>builder()
+                .content(page.getContent())
+                .page(page.getNumber())
+                .size(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .build();
+    }
+
+    public static <E, T> PagedResponse<T> from(Page<E> page, Function<E, T> mapper) {
+        List<T> mapped = page.getContent().stream().map(mapper).collect(Collectors.toList());
+        return PagedResponse.<T>builder()
+                .content(mapped)
+                .page(page.getNumber())
+                .size(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .build();
+    }
+}
