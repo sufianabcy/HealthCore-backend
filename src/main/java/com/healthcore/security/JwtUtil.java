@@ -25,6 +25,7 @@ public class JwtUtil {
     private long expiration;
 
     private Key getSigningKey() {
+        System.out.println("JWT Secret Length = " + (secret != null ? secret.length() : "null")); // 🔥 DIAGNOSTIC TRACE
         byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
