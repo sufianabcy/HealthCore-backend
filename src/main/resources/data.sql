@@ -36,11 +36,6 @@ INSERT IGNORE INTO inventory_items (pharmacy_id, name, category, stock, updated_
 ((SELECT id FROM users WHERE email='healthplus@pharmacy.com'), 'Metformin 500mg', 'DIABETES', 300, NOW()),
 ((SELECT id FROM users WHERE email='healthplus@pharmacy.com'), 'Ibuprofen 400mg', 'PAIN_RELIEF', 40, NOW()); 
 
--- Past visits so these patients appear in doctor portal lists
-INSERT IGNORE INTO appointments (patient_id, doctor_id, date, time, type, duration, status, created_at) VALUES
-((SELECT id FROM users WHERE email='john@patient.com'), (SELECT id FROM users WHERE email='rahul@doctor.com'), DATE_SUB(CURDATE(), INTERVAL 14 DAY), '09:00', 'IN_PERSON', 30, 'COMPLETED', NOW()),
-((SELECT id FROM users WHERE email='alice@patient.com'), (SELECT id FROM users WHERE email='rahul@doctor.com'), DATE_SUB(CURDATE(), INTERVAL 7 DAY), '10:30', 'VIRTUAL', 30, 'COMPLETED', NOW()),
-((SELECT id FROM users WHERE email='bob@patient.com'), (SELECT id FROM users WHERE email='sarah@doctor.com'), DATE_SUB(CURDATE(), INTERVAL 3 DAY), '14:00', 'IN_PERSON', 30, 'COMPLETED', NOW());
 
 -- Insert Sample Activity Logs
 INSERT IGNORE INTO activity_logs (actor, action, timestamp) VALUES

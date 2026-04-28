@@ -71,7 +71,8 @@ public class DoctorService {
     @Transactional(readOnly = true)
     public Page<PatientDTO> getMyPatients(Pageable pageable) {
         User user = authService.getAuthenticatedUser();
-        return patientRepository.findDistinctPatientsByDoctorId(user.getId(), pageable)
+        // Return all patients so doctors can book appointments with any registered patient.
+        return patientRepository.findAll(pageable)
                 .map(this::mapToPatientDTO);
     }
 
