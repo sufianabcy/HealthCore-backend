@@ -67,6 +67,12 @@ public class DoctorController {
         return ApiResponse.of(appointmentService.updateStatus(id, request.getStatus()));
     }
 
+    @DeleteMapping("/appointments/{id}")
+    public ApiResponse<String> deleteAppointment(@PathVariable Long id) {
+        appointmentService.deleteAppointment(id);
+        return ApiResponse.of("Appointment successfully deleted");
+    }
+
     @PatchMapping("/appointments/{id}/reschedule")
     public ApiResponse<AppointmentDTO> rescheduleAppointment(@PathVariable Long id, @Valid @RequestBody RescheduleRequest request) {
         return ApiResponse.of(appointmentService.reschedule(id, request));

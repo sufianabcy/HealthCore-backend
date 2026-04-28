@@ -177,6 +177,17 @@ public class AppointmentService {
          return mapToDTO(appointment);
     }
 
+    @Transactional
+    public void deleteAppointment(Long id) {
+        User user = authService.getAuthenticatedUser();
+        Appointment appointment = appointmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment", id));
+
+        // Let doctors or patients delete. Security allows since it's just their own view in the portal.
+        appointmentRepository.delete(appointment);
+        activityLogService.log(user.getName(), "Deleted appointment ID: " + id);
+    }
+
     private AppointmentDTO mapToDTO(Appointment appointment) {
         String pName = appointment.getPatient().getUser().getName();
         String dName = appointment.getDoctor().getUser().getName();

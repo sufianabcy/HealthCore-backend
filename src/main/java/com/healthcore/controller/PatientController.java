@@ -36,4 +36,15 @@ public class PatientController {
             Pageable pageable) {
         return ApiResponse.of(PagedResponse.from(patientService.getMyRecords(type, pageable)));
     }
+
+    @PatchMapping("/appointments/{id}/status")
+    public ApiResponse<AppointmentDTO> updateAppointmentStatus(@PathVariable Long id, @Valid @RequestBody com.healthcore.dto.request.UpdateStatusRequest request) {
+        return ApiResponse.of(appointmentService.updateStatus(id, request.getStatus()));
+    }
+
+    @DeleteMapping("/appointments/{id}")
+    public ApiResponse<String> deleteAppointment(@PathVariable Long id) {
+        appointmentService.deleteAppointment(id);
+        return ApiResponse.of("Appointment successfully deleted");
+    }
 }
