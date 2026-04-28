@@ -16,8 +16,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ApiResponse<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
-        return ApiResponse.of(authService.login(request));
+    public org.springframework.http.ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
+        try {
+            return org.springframework.http.ResponseEntity.ok(ApiResponse.of(authService.login(request)));
+        } catch (Exception e) {
+            e.printStackTrace(); // 🔥 ADDED THIS TO CATCH SILENT 500s
+            return org.springframework.http.ResponseEntity.status(500).body(java.util.Map.of("error", e.getMessage()));
+        }
     }
 
     @GetMapping("/me")
